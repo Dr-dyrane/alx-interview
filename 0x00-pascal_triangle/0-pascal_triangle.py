@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+Generate Pascal's Triangle up to n rows.
+"""
 
 
 def pascal_triangle(n):
@@ -15,7 +18,7 @@ def pascal_triangle(n):
     triangle = []
 
     if n <= 0:
-        return triangle
+        return (triangle)
 
     triangle.append([1])
 
@@ -28,4 +31,4 @@ def pascal_triangle(n):
         row.append(1)
         triangle.append(row)
 
-    return triangle
+    return (triangle)
