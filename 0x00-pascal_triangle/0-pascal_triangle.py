@@ -15,20 +15,16 @@ def pascal_triangle(n):
     - list of lists: Pascal's Triangle represented as
     - a list of lists of integers.
     """
-    triangle = []
+    pt = []  # Initialize the Pascal's Triangle list
 
+    # Check for the base case when n is less than or equal to 0
     if n <= 0:
-        return (triangle)
+        return pt
 
-    triangle.append([1])
+    for i in range(n):
+        # Calculate each row using a list comprehension
+        row = [1] + [pt[i-1][j-1] + pt[i-1][j] for j in range(1, i)] + [1]
+        pt.append(row)  # Add the row to Pascal's Triangle
 
-    for i in range(1, n):
-        row = [1]
+    return pt
 
-        for j in range(1, i):
-            row.append(triangle[i-1][j-1] + triangle[i-1][j])
-
-        row.append(1)
-        triangle.append(row)
-
-    return (triangle)
