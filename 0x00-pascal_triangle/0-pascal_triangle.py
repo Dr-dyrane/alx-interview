@@ -15,9 +15,8 @@ def pascal_triangle(n):
     - list of lists: Pascal's Triangle represented as
     - a list of lists of integers.
     """
-    triangle = []  # Initialize the Pascal's Triangle list
+    triangle = []
 
-    # Check for the base case when n is less than or equal to 0
     if n <= 0:
         return (triangle)
 
@@ -33,4 +32,3 @@ def pascal_triangle(n):
         triangle.append(row)
 
     return (triangle)
-
