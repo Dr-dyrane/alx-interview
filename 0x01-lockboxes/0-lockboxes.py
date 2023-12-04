@@ -9,6 +9,7 @@ and a key with the same number as a box opens that box.
 Author: Alexander Udeogaranya
 """
 
+
 def canUnlockAll(boxes):
     """
     Determines if all the boxes can be opened.
