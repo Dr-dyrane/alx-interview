@@ -38,7 +38,3 @@ def canUnlockAll(boxes):
 
     # Check if all boxes have been opened
     return len(opened_boxes) == len(boxes)
-
-
-if __name__ == "__main__":
-    pass  # If this script is run directly, do nothing
