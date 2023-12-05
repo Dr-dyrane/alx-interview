@@ -24,17 +24,21 @@ def canUnlockAll(boxes):
     # Set to keep track of opened boxes
     opened_boxes = set()
 
-    # Queue for BFS (Breadth-First Search)
-    queue = [0]  # Start with the first box
+    # Iterate through each box
+    for box_id, box in enumerate(boxes):
+        # Check if the box is empty or the first box (already unlocked)
+        if len(box) == 0 or box_id == 0:
+            opened_boxes.add(box_id)
 
-    # BFS to explore and open boxes
-    while queue:
-        current_box = queue.pop(0)
-        opened_boxes.add(current_box)
+        # Iterate through keys in the current box
+        for key in box:
+            # Check if the key can unlock a valid box
+            if 0 <= key < len(boxes) and key != box_id:
+                opened_boxes.add(key)
 
-        # Add new keys to the queue (if any)
-        queue.extend(
-            key for key in boxes[current_box] if key not in opened_boxes)
+        # Check if all boxes are unlocked
+        if len(opened_boxes) == len(boxes):
+            return True
 
-    # Check if all boxes have been opened
-    return len(opened_boxes) == len(boxes)
+    # If not all boxes can be unlocked
+    return False
