@@ -10,6 +10,23 @@ Author: Alexander Udeogaranya
 """
 
 
+def is_empty_or_first(box_id, box):
+    """Check if the box is empty or the first box."""
+    return not box or box_id == 0
+
+
+def can_unlock_current_box(unlocked, box_id):
+    """Check if the current box can be unlocked."""
+    return is_empty_or_first(box_id, boxes[box_id]) and box_id not in unlocked
+
+
+def unlock_boxes(unlocked, box):
+    """Unlock boxes based on the keys in the current box."""
+    for key in box:
+        if 0 <= key < len(boxes) and key != box_id:
+            unlocked.add(key)
+
+
 def canUnlockAll(boxes):
     """
     Determines if all the boxes can be opened.
@@ -22,23 +39,24 @@ def canUnlockAll(boxes):
     """
 
     # Set to keep track of opened boxes
-    opened_boxes = set()
+    unlocked = set()
 
     # Iterate through each box
     for box_id, box in enumerate(boxes):
-        # Check if the box is empty or the first box (already unlocked)
-        if len(box) == 0 or box_id == 0:
-            opened_boxes.add(box_id)
+        # Check if the current box can be unlocked
+        if can_unlock_current_box(unlocked, box_id):
+            unlocked.add(box_id)
 
-        # Iterate through keys in the current box
-        for key in box:
-            # Check if the key can unlock a valid box
-            if 0 <= key < len(boxes) and key != box_id:
-                opened_boxes.add(key)
+        # Unlock boxes based on the keys in the current box
+        unlock_boxes(unlocked, box)
 
         # Check if all boxes are unlocked
-        if len(opened_boxes) == len(boxes):
+        if len(unlocked) == len(boxes):
             return True
 
     # If not all boxes can be unlocked
     return False
+
+
+if __name__ == "__main__":
+    pass  # If this script is run directly, do nothing
