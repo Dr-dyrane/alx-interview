@@ -15,12 +15,12 @@ def is_empty_or_first(box_id, box):
     return not box or box_id == 0
 
 
-def can_unlock_current_box(unlocked, box_id):
+def can_unlock_current_box(unlocked, box_id, boxes):
     """Check if the current box can be unlocked."""
     return is_empty_or_first(box_id, boxes[box_id]) and box_id not in unlocked
 
 
-def unlock_boxes(unlocked, box):
+def unlock_boxes(unlocked, box_id, box, boxes):
     """Unlock boxes based on the keys in the current box."""
     for key in box:
         if 0 <= key < len(boxes) and key != box_id:
@@ -44,11 +44,11 @@ def canUnlockAll(boxes):
     # Iterate through each box
     for box_id, box in enumerate(boxes):
         # Check if the current box can be unlocked
-        if can_unlock_current_box(unlocked, box_id):
+        if can_unlock_current_box(unlocked, box_id, boxes):
             unlocked.add(box_id)
 
         # Unlock boxes based on the keys in the current box
-        unlock_boxes(unlocked, box)
+        unlock_boxes(unlocked, box_id, box, boxes)
 
         # Check if all boxes are unlocked
         if len(unlocked) == len(boxes):
