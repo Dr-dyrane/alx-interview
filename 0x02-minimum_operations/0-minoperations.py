@@ -20,13 +20,16 @@ def minOperations(n):
     if n <= 1:
         return 0
 
-    # Initialize an array to store minimum operations for each number up to n
-    dp = [float('inf')] * (n + 1)
-    dp[1] = 0  # Base case: 1 H requires 0 operations
-
-    # Dynamic programming to fill the dp array
-    for i in range(1, n + 1):
-        for j in range(2 * i, n + 1, i):
-            dp[j] = min(dp[j], dp[i] + j // i)
-
-    return dp[n]
+    operations, root = 0, 2
+    while root <= n:
+        # if n evenly divides by root
+        if n % root == 0:
+            # total even-divisions by root = total operations
+            operations += root
+            # set n to the remainder
+            n = n / root
+            # reduce root to find remaining smaller vals that evenly-divide n
+            root -= 1
+        # increment root until it evenly-divides n
+        root += 1
+    return operations
