@@ -80,27 +80,36 @@ def minOperations(n):
     if n <= 1:
         return 0
 
-    # Initialize an array to store minimum operations for each number up to n
-    dp = [float('inf')] * (n + 1)
-    dp[1] = 0  # Base case: 1 H requires 0 operations
+    # Initialize variables to keep track of operations and divisor
+    operations, divisor = 0, 2
 
-    # Dynamic programming to fill the dp array
-    for i in range(1, n + 1):
-        for j in range(2 * i, n + 1, i):
-            dp[j] = min(dp[j], dp[i] + j // i)
+    # Loop until the divisor is less than or equal to n
+    while divisor <= n:
+        # Check if n is divisible by the current divisor
+        if n % divisor == 0:
+            # Total even-divisions by divisor equals total operations
+            operations += divisor
+            # Set n to the quotient to continue factoring
+            n = n / divisor
+            # Decrement the divisor to find remaining
+            # smaller values that evenly-divide n
+            divisor -= 1
+        # Increment divisor to check the next potential factor
+        divisor += 1
 
-    return dp[n]
+    # Return the minimum number of operations
+    return operations
 ```
 
 ### Explanation in Simple Terms
 
 1. **Base Case:** If you want 0 or 1 'H' characters, no magic operations are needed (return 0).
 
-2. **Dynamic Programming Array (dp):** Imagine a magical array where each position holds the minimum number of operations needed to create that many 'H' characters.
+2. **Efficient Factorization Loop:** We use an efficient factorization loop that continuously divides the target number 'n' by its smallest divisors. For each divisor, we add it to the total operations needed and update 'n' accordingly. This process is repeated until 'n' is reduced to 1. This approach ensures the fewest number of operations.
 
-3. **Magical Loop:** We loop through each number (i) and its multiples (j) in the magical array. For each multiple, we calculate the minimum operations needed.
+3. **Return the Magic:** Finally, the number of operations needed to create 'n' 'H' characters is returned.
 
-4. **Return the Magic:** Finally, the number of operations needed to create 'n' 'H' characters is returned.
+This optimized algorithm minimizes the number of operations required to reach the target 'n' characters by efficiently factoring the number.
 
 ### Testing Your Magic Powers 🧙‍♂️
 
