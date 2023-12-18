@@ -98,8 +98,8 @@ def process_line(log_info, status_counts, total_file_size, line_count):
         # Check if the line count is within the first 10 lines
         if line_count <= 10:
             # Extract file size and status code from the log info
-            total_file_size += log_info.get('file_size')
-            code = log_info.get('status_code')
+            total_file_size += log_info.get('file_size',0)
+            code = log_info.get('status_code','0')
 
             # Check if status code is valid
             if (code in status_counts.keys()):
