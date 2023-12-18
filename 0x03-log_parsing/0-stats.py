@@ -20,6 +20,7 @@ Project Author:
 """
 
 import sys
+import re
 
 
 def print_statistics(status_counts, total_file_size):
@@ -41,7 +42,45 @@ def print_statistics(status_counts, total_file_size):
             print(f"{code}: {count}")
 
 
-def process_line(reversed_line, status_counts, total_file_size, line_count):
+def extract_log_info(line):
+    """
+    Extract log information using regular expressions.
+
+    Args:
+        line (str): Log line.
+
+    Returns:
+        dict: Dictionary containing 'status_code' and 'file_size'.
+    """
+    # Define a regular expression pattern to match log information
+    # <IP Address> - [<date>]
+    # "GET /projects/260 HTTP/1.1" <status code> <file size>
+    log_pattern = re.compile(
+        r'\s*(?P<ip>\S+)\s*'          # Match IP Address
+        r'\['                         # Match opening bracket for date
+        r'(?P<date>\d+\-\d+\-\d+ \d+:\d+:\d+\.\d+)'  # Match date
+        r'\]\s*'                      # Match closing bracket and any spaces
+        r'"(?P<request>[^"]*)"\s*'    # Match request within double quotes
+        r'(?P<status_code>\S+)\s*'    # Match status code
+        r'(?P<file_size>\d+)'         # Match file size
+    )
+
+    # Attempt to match the log pattern with the input line
+    match = log_pattern.match(line)
+
+    # Check if a match is found
+    if match:
+        # Extract status code and file size from the match groups
+        return {
+            'status_code': match.group('status_code'),
+            'file_size': int(match.group('file_size'))
+        }
+
+    # Return an empty dictionary if no match is found
+    return {}
+
+
+def process_line(log_info, status_counts, total_file_size, line_count):
     """
     Process a single line of log data and update metrics.
 
@@ -51,16 +90,16 @@ def process_line(reversed_line, status_counts, total_file_size, line_count):
         total_file_size (int): Total file size.
         line_count (int): Current line count.
     """
-    # Check if the reversed line has at least 3 elements
-    if len(reversed_line) > 2:
+    # Check if log_info is not empty
+    if log_info:
         # Increment line count for each line processed
         line_count += 1
 
         # Check if the line count is within the first 10 lines
         if line_count <= 10:
-            # Extract file size and status code from the reversed line
-            total_file_size += int(reversed_line[0])  # file size
-            code = reversed_line[1]  # status code
+            # Extract file size and status code from the log info
+            total_file_size += log_info.get('file_size')
+            code = log_info.get('status_code')
 
             # Check if status code is valid
             if (code in status_counts.keys()):
@@ -103,12 +142,12 @@ def main():
     try:
         # Loop through each line in standard input
         for line in sys.stdin:
-            # Split the line into a list of words and reverse the order
-            reversed_line = line.split()[::-1]
+            # Extract log information using regex.
+            log_info  = extract_log_info(line)
 
             # Process the log line and update metrics
             line_count = process_line(
-                reversed_line, status_counts, total_file_size, line_count
+                log_info , status_counts, total_file_size, line_count
             )
 
     finally:
