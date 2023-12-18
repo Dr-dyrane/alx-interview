@@ -68,6 +68,9 @@ def main():
     try:
         # Loop through each line in standard input
         for line in sys.stdin:
+            # Reversing the line using slicing
+            reversed_line = line.split()[::-1]
+
             # Increment line count for each line processed
             line_count += 1
 
@@ -84,16 +87,15 @@ def main():
                 # Reset status_counts using a dictionary comprehension
                 status_counts = {key: 0 for key in status_counts}
 
-            # Split the line into parts
-            parts = line.split()
-
             # Check conditions for valid log entry and update metrics
-            if (len(parts) >= 8 and
-                    parts[-3].isdigit() and
-                    parts[-2] in status_counts):
-                # Update total file size and increment status code count
-                total_file_size += int(parts[-3])
-                status_counts[parts[-2]] += 1
+            if len(reversed_line) >= 8:
+                # Update total file size
+                total_file_size += int(reversed_line[1])  # file size
+                code = reversed_line[0]  # status code
+
+                if code in status_counts:
+                    # increment status code count
+                    status_counts[code] += 1
 
     except KeyboardInterrupt:
         pass  # Allow graceful exit on Ctrl+C
