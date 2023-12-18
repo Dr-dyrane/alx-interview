@@ -86,7 +86,7 @@ def main():
 
             # Split the line into parts
             parts = line.split()
-            
+
             # Check conditions for valid log entry and update metrics
             if (len(parts) >= 8 and
                     parts[-3].isdigit() and
@@ -104,5 +104,5 @@ def main():
 
 
 if __name__ == "__main__":
-     # If this script is run as the main module, execute the main() function
+    # If this script is run as the main module, execute the main() function
     main()
