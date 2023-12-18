@@ -90,29 +90,27 @@ def process_line(log_info, status_counts, total_file_size, line_count):
         total_file_size (int): Total file size.
         line_count (int): Current line count.
     """
-    # Check if log_info is not empty
-    if log_info:
-        # Increment line count for each line processed
-        line_count += 1
+    # Increment line count for each line processed
+    line_count += 1
 
-        # Check if the line count is within the first 10 lines
-        if line_count <= 10:
-            # Extract file size and status code from the log info
-            total_file_size += log_info.get('file_size', 0)
-            code = log_info.get('status_code', '0')
+    # Check if the line count is within the first 10 lines
+    if line_count <= 10:
+        # Extract file size and status code from the log info
+        total_file_size += log_info.get('file_size', 0)
+        code = log_info.get('status_code', '0')
 
-            # Check if status code is valid
-            if (code in status_counts.keys()):
-                # Increment status code count
-                status_counts[code] += 1
+        # Check if status code is valid
+        if (code in status_counts.keys()):
+            # Increment status code count
+            status_counts[code] += 1
 
-        # Check if 10 lines have been processed
-        if line_count == 10:
-            # Print statistics and reset counter
-            print_statistics(status_counts, total_file_size)
+    # Check if 10 lines have been processed
+    if line_count == 10:
+        # Print statistics and reset counter
+        print_statistics(status_counts, total_file_size)
 
-            # Reset line count to 0
-            line_count = 0
+        # Reset line count to 0
+        line_count = 0
 
     return line_count
 
