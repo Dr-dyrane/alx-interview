@@ -85,9 +85,6 @@ def main():
     # Initialize total file size
     total_file_size = 0
 
-    # Initialize status code
-    code = 0
-
     # Initialize status counts dictionary
     status_counts = {
         "200": 0,
