@@ -143,11 +143,11 @@ def main():
         # Loop through each line in standard input
         for line in sys.stdin:
             # Extract log information using regex.
-            log_info  = extract_log_info(line)
+            log_info = extract_log_info(line)
 
             # Process the log line and update metrics
             line_count = process_line(
-                log_info , status_counts, total_file_size, line_count
+                log_info, status_counts, total_file_size, line_count
             )
 
     finally:
