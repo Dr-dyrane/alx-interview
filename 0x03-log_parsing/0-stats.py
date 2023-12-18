@@ -78,14 +78,14 @@ def main():
                 line_count += 1
 
                 if line_count <= 10:
-                        # Update total file size
-                        total_file_size += int(reversed_line[0])  # file size
-                        code = reversed_line[1]  # status code
+                    # Update total file size
+                    total_file_size += int(reversed_line[0])  # file size
+                    code = reversed_line[1]  # status code
 
-                        # Check if status code is valid
-                        if (code in status_counts.keys()):
-                            # Increment status code count
-                            status_counts[code] += 1
+                    # Check if status code is valid
+                    if (code in status_counts.keys()):
+                        # Increment status code count
+                        status_counts[code] += 1
 
                 if line_count == 10:
                     # Print statistics and reset counters
