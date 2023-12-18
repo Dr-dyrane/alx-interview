@@ -111,6 +111,10 @@ def main():
                 reversed_line, status_counts, total_file_size, line_count
             )
 
+    except KeyboardInterrupt:
+        # Handle keyboard interruption
+        pass
+
     finally:
         # Print final statistics before exiting
         print_statistics(status_counts, total_file_size)
