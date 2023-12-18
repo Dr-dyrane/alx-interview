@@ -34,11 +34,10 @@ def print_statistics(status_counts, total_file_size):
     print(f"File size: {total_file_size}")
 
     # Iterate through sorted status codes and print counts for each code
-    for code in sorted(status_counts):
-        count = status_counts[code]
+    for code, count in sorted(status_counts.items()):
 
         # Check if there are counts for the current status code
-        if count > 0:
+        if count != 0:
             # Print the status code and its count
             print(f"{code}: {count}")
 
@@ -49,6 +48,9 @@ def main():
     """
     # Initialize total file size
     total_file_size = 0
+
+    # Initialize status code
+    code = 0
 
     # Initialize status counts dictionary
     status_counts = {
@@ -71,34 +73,26 @@ def main():
             # Reversing the line using slicing
             reversed_line = line.split()[::-1]
 
-            # Increment line count for each line processed
-            line_count += 1
+            if len(reversed_line) > 2:
+                # Increment line count for each line processed
+                line_count += 1
 
-            # Check if 10 lines have been processed
-            if line_count > 10:
-                # Reset line count to 1
-                line_count = 1
+                if line_count <= 10:
+                        # Update total file size
+                        total_file_size += int(reversed_line[0])  # file size
+                        code = reversed_line[1]  # status code
 
-                # Print statistics and reset counters
-                print_statistics(status_counts, total_file_size)
+                        # Check if status code is valid
+                        if (code in status_counts.keys()):
+                            # Increment status code count
+                            status_counts[code] += 1
 
-                # Reset total file size to 0
-                total_file_size = 0
-                # Reset status_counts using a dictionary comprehension
-                status_counts = {key: 0 for key in status_counts}
+                if line_count == 10:
+                    # Print statistics and reset counters
+                    print_statistics(status_counts, total_file_size)
 
-            # Check conditions for valid log entry and update metrics
-            if len(reversed_line) >= 8:
-                # Update total file size
-                total_file_size += int(reversed_line[1])  # file size
-                code = reversed_line[0]  # status code
-
-                if code in status_counts:
-                    # increment status code count
-                    status_counts[code] += 1
-
-    except KeyboardInterrupt:
-        pass  # Allow graceful exit on Ctrl+C
+                    # Reset line count to 0
+                    line_count = 0
 
     finally:
         # Print final statistics before exiting
