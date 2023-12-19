@@ -22,23 +22,47 @@ Project Author:
 import sys
 
 
-# Initialize total file size
-total_file_size = 0
+def process_line(line, status_counts, total_file_size, line_count):
+    """
+    Process a line of log data.
 
-# Initialize code
-code = 0
+    Args:
+        line (str): The log data line.
+        status_counts (dict): Dictionary with counts for each status code.
+        total_file_size (int): Total file size.
+        line_count (int): Current line count.
 
-# Initialize status counts dictionary
-status_counts = {
-    "200": 0,
-    "301": 0,
-    "400": 0,
-    "401": 0,
-    "403": 0,
-    "404": 0,
-    "405": 0,
-    "500": 0
-}
+    Returns:
+        int: Updated line count.
+    """
+    # Split the line into a list of words and reverse the order
+    reversed_line = line.split()[::-1]
+
+    # Check if the reversed line has at least 3 elements
+    if len(reversed_line) > 2:
+        # Increment line count for each line processed
+        line_count += 1
+
+        # Check if the line count is within the first 10 lines
+        if line_count <= 10:
+            # Extract file size and status code from the reversed line
+            total_file_size += int(reversed_line[0])  # file size
+            code = reversed_line[1]  # status code
+
+            # Check if status code is valid
+            if code in status_counts:
+                # Increment status code count
+                status_counts[code] += 1
+
+        # Check if 10 lines have been processed
+        if line_count == 10:
+            # Print statistics and reset counter
+            print_statistics(status_counts, total_file_size)
+
+            # Reset line count to 0
+            line_count = 0
+
+    return line_count
 
 
 def print_statistics(status_counts, total_file_size):
@@ -60,40 +84,43 @@ def print_statistics(status_counts, total_file_size):
             print("{}: {}".format(key, val))
 
 
-# Initialize line count
-line_count = 0
+def main():
+    """
+    Main function to read log data and process statistics.
+    """
+    # Initialize total file size
+    total_file_size = 0
 
-try:
-    # Loop through each line in standard input
-    for line in sys.stdin:
-        # Split the line into a list of words and reverse the order
-        reversed_line = line.split()
-        reversed_line = reversed_line[::-1]
+    # Initialize status counts dictionary
+    status_counts = {
+        "200": 0,
+        "301": 0,
+        "400": 0,
+        "401": 0,
+        "403": 0,
+        "404": 0,
+        "405": 0,
+        "500": 0
+    }
 
-        # Check if the reversed line has at least 3 elements
-        if len(reversed_line) > 2:
-            # Increment line count for each line processed
-            line_count += 1
+    # Initialize line count
+    line_count = 0
 
-            # Check if the line count is within the first 10 lines
-            if line_count <= 10:
-                # Extract file size and status code from the reversed line
-                total_file_size += int(reversed_line[0])  # file size
-                code = reversed_line[1]  # status code
+    try:
+        # Loop through each line in standard input
+        for line in sys.stdin:
+            # Process the line and update line count
+            line_count = process_line(
+                line, status_counts, total_file_size, line_count
+            )
 
-                # Check if status code is valid
-                if (code in status_counts.keys()):
-                    # Increment status code count
-                    status_counts[code] += 1
+    except KeyboardInterrupt:
+        pass  # Handle keyboard interruption if needed
 
-            # Check if 10 lines have been processed
-            if line_count == 10:
-                # Print statistics and reset counter
-                print_statistics(status_counts, total_file_size)
+    finally:
+        # Print final statistics before exiting
+        print_statistics(status_counts, total_file_size)
 
-                # Reset line count to 0
-                line_count = 0
 
-finally:
-    # Print final statistics before exiting
-    print_statistics(status_counts, total_file_size)
+if __name__ == "__main__":
+    main()
