@@ -38,7 +38,8 @@ def print_statistics(status_counts, total_file_size):
         # Check if there are counts for the current status code
         if val != 0:
             # Print the status code and its count
-             print("{}: {}".format(key, val))
+            print("{}: {}".format(key, val))
+
 
 # Initialize total file size
 total_file_size = 0
