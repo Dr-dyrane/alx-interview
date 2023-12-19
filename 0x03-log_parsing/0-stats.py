@@ -64,19 +64,18 @@ try:
     # Loop through each line in standard input
     for line in sys.stdin:
         # Split the line into a list of words and reverse the order
-        reversed_line = line.split()
-        reversed_line = reversed_line[::-1]
+        line = line.split()[::-1]
 
         # Check if the reversed line has at least 3 elements
-        if len(reversed_line) > 2:
+        if len(line) > 2:
             # Increment line count for each line processed
             line_count += 1
 
             # Check if the line count is within the first 10 lines
             if line_count <= 10:
                 # Extract file size and status code from the reversed line
-                total_file_size += int(reversed_line[0])  # file size
-                code = reversed_line[1]  # status code
+                total_file_size += int(line[0])  # file size
+                code = line[1]  # status code
 
                 # Check if status code is valid
                 if code in status_counts:
