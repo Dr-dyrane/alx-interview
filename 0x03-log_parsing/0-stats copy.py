@@ -41,7 +41,8 @@ def print_statistics(status_counts, total_file_size):
             print(f"{code}: {count}")
 
 
-def process_line(reversed_line, status_counts, total_file_size, line_count):
+def process_line(
+    reversed_line, status_counts, total_file_size, code, line_count):
     """
     Process a single line of log data and update metrics.
 
@@ -75,8 +76,6 @@ def process_line(reversed_line, status_counts, total_file_size, line_count):
             # Reset line count to 0
             line_count = 0
 
-    return line_count
-
 
 def main():
     """
@@ -84,6 +83,9 @@ def main():
     """
     # Initialize total file size
     total_file_size = 0
+
+    # Initialize code
+    code = 0
 
     # Initialize status counts dictionary
     status_counts = {
@@ -107,8 +109,8 @@ def main():
             reversed_line = line.split()[::-1]
 
             # Process the log line and update metrics
-            line_count = process_line(
-                reversed_line, status_counts, total_file_size, line_count
+            process_line(
+                reversed_line, status_counts, total_file_size, code, line_count
             )
 
     finally:
