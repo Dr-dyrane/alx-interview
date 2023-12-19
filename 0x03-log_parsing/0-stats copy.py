@@ -31,14 +31,14 @@ def print_statistics(status_counts, total_file_size):
         total_file_size (int): Total file size.
     """
     # Print the total file size
-    print(f"File size: {total_file_size}")
+    print("File size: {}".format(total_file_size))
 
     # Iterate through sorted status codes and print counts for each code
-    for code, count in sorted(status_counts.items()):
+    for key, val in sorted(status_counts.items()):
         # Check if there are counts for the current status code
-        if count != 0:
+        if val != 0:
             # Print the status code and its count
-            print(f"{code}: {count}")
+             print("{}: {}".format(key, val))
 
 
 def process_line(
