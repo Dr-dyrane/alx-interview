@@ -76,48 +76,38 @@ def process_line(
             # Reset line count to 0
             line_count = 0
 
+# Initialize total file size
+total_file_size = 0
 
-def main():
-    """
-    Read log data from standard input, compute metrics, and print statistics.
-    """
-    # Initialize total file size
-    total_file_size = 0
+# Initialize code
+code = 0
 
-    # Initialize code
-    code = 0
+# Initialize status counts dictionary
+status_counts = {
+    "200": 0,
+    "301": 0,
+    "400": 0,
+    "401": 0,
+    "403": 0,
+    "404": 0,
+    "405": 0,
+    "500": 0
+}
 
-    # Initialize status counts dictionary
-    status_counts = {
-        "200": 0,
-        "301": 0,
-        "400": 0,
-        "401": 0,
-        "403": 0,
-        "404": 0,
-        "405": 0,
-        "500": 0
-    }
+# Initialize line count
+line_count = 0
 
-    # Initialize line count
-    line_count = 0
+try:
+    # Loop through each line in standard input
+    for line in sys.stdin:
+        # Split the line into a list of words and reverse the order
+        reversed_line = line.split()[::-1]
 
-    try:
-        # Loop through each line in standard input
-        for line in sys.stdin:
-            # Split the line into a list of words and reverse the order
-            reversed_line = line.split()[::-1]
+        # Process the log line and update metrics
+        process_line(
+            reversed_line, status_counts, total_file_size, code, line_count
+        )
 
-            # Process the log line and update metrics
-            process_line(
-                reversed_line, status_counts, total_file_size, code, line_count
-            )
-
-    finally:
-        # Print final statistics before exiting
-        print_statistics(status_counts, total_file_size)
-
-
-if __name__ == "__main__":
-    # If this script is run as the main module, execute the main() function
-    main()
+finally:
+    # Print final statistics before exiting
+    print_statistics(status_counts, total_file_size)
