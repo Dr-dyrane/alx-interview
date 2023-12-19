@@ -31,93 +31,67 @@ def print_statistics(status_counts, total_file_size):
         total_file_size (int): Total file size.
     """
     # Print the total file size
-    print(f"File size: {total_file_size}")
+    print("File size: {}".format(total_file_size))
 
     # Iterate through sorted status codes and print counts for each code
-    for code, count in sorted(status_counts.items()):
+    for key, val in sorted(status_counts.items()):
         # Check if there are counts for the current status code
-        if count != 0:
+        if val != 0:
             # Print the status code and its count
-            print(f"{code}: {count}")
+             print("{}: {}".format(key, val))
 
+# Initialize total file size
+total_file_size = 0
 
-def process_line(
-    reversed_line, status_counts, total_file_size, code, line_count):
-    """
-    Process a single line of log data and update metrics.
+# Initialize code
+code = 0
 
-    Args:
-        reversed_line (list): List of words in reversed order.
-        status_counts (dict): Dictionary with counts for each status code.
-        total_file_size (int): Total file size.
-        line_count (int): Current line count.
-    """
-    # Check if the reversed line has at least 3 elements
-    if len(reversed_line) > 2:
-        # Increment line count for each line processed
-        line_count += 1
+# Initialize status counts dictionary
+status_counts = {
+    "200": 0,
+    "301": 0,
+    "400": 0,
+    "401": 0,
+    "403": 0,
+    "404": 0,
+    "405": 0,
+    "500": 0
+}
 
-        # Check if the line count is within the first 10 lines
-        if line_count <= 10:
-            # Extract file size and status code from the reversed line
-            total_file_size += int(reversed_line[0])  # file size
-            code = reversed_line[1]  # status code
+# Initialize line count
+line_count = 0
 
-            # Check if status code is valid
-            if (code in status_counts.keys()):
-                # Increment status code count
-                status_counts[code] += 1
+try:
+    # Loop through each line in standard input
+    for line in sys.stdin:
+        # Split the line into a list of words and reverse the order
+        reversed_line = line.split()
+        reversed_line = reversed_line[::-1]
 
-        # Check if 10 lines have been processed
-        if line_count == 10:
-            # Print statistics and reset counter
-            print_statistics(status_counts, total_file_size)
+        # Check if the reversed line has at least 3 elements
+        if len(reversed_line) > 2:
+            # Increment line count for each line processed
+            line_count += 1
 
-            # Reset line count to 0
-            line_count = 0
+            # Check if the line count is within the first 10 lines
+            if line_count <= 10:
+                # Extract file size and status code from the reversed line
+                total_file_size += int(reversed_line[0])  # file size
+                code = reversed_line[1]  # status code
 
+                # Check if status code is valid
+                if (code in status_counts.keys()):
+                    # Increment status code count
+                    status_counts[code] += 1
 
-def main():
-    """
-    Read log data from standard input, compute metrics, and print statistics.
-    """
-    # Initialize total file size
-    total_file_size = 0
+            # Check if 10 lines have been processed
+            if line_count == 10:
+                # Print statistics and reset counter
+                print_statistics(status_counts, total_file_size)
 
-    # Initialize code
-    code = 0
+                # Reset line count to 0
+                line_count = 0
 
-    # Initialize status counts dictionary
-    status_counts = {
-        "200": 0,
-        "301": 0,
-        "400": 0,
-        "401": 0,
-        "403": 0,
-        "404": 0,
-        "405": 0,
-        "500": 0
-    }
-
-    # Initialize line count
-    line_count = 0
-
-    try:
-        # Loop through each line in standard input
-        for line in sys.stdin:
-            # Split the line into a list of words and reverse the order
-            reversed_line = line.split()[::-1]
-
-            # Process the log line and update metrics
-            process_line(
-                reversed_line, status_counts, total_file_size, code, line_count
-            )
-
-    finally:
-        # Print final statistics before exiting
-        print_statistics(status_counts, total_file_size)
-
-
-if __name__ == "__main__":
-    # If this script is run as the main module, execute the main() function
-    main()
+finally:
+    # Print final statistics before exiting
+    print_statistics(status_counts, total_file_size)
