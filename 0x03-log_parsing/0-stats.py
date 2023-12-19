@@ -79,7 +79,7 @@ try:
                 code = reversed_line[1]  # status code
 
                 # Check if status code is valid
-                if (code in status_counts.keys()):
+                if code in status_counts:
                     # Increment status code count
                     status_counts[code] += 1
 
