@@ -59,40 +59,48 @@ status_counts = {
     "500": 0
 }
 
-# Initialize line count
-line_count = 0
 
-try:
-    # Loop through each line in standard input
-    for line in sys.stdin:
-        # Split the line into a list of words and reverse the order
-        reversed_line = line.split()
-        reversed_line = reversed_line[::-1]
+def main():
+    """
+    call main
+    """
+    # Initialize line count
+    line_count = 0
 
-        # Check if the reversed line has at least 3 elements
-        if len(reversed_line) > 2:
-            # Increment line count for each line processed
-            line_count += 1
+    try:
+        # Loop through each line in standard input
+        for line in sys.stdin:
+            # Split the line into a list of words and reverse the order
+            reversed_line = line.split()
+            reversed_line = reversed_line[::-1]
 
-            # Check if the line count is within the first 10 lines
-            if line_count <= 10:
-                # Extract file size and status code from the reversed line
-                total_file_size += int(reversed_line[0])  # file size
-                code = reversed_line[1]  # status code
+            # Check if the reversed line has at least 3 elements
+            if len(reversed_line) > 2:
+                # Increment line count for each line processed
+                line_count += 1
 
-                # Check if status code is valid
-                if (code in status_counts.keys()):
-                    # Increment status code count
-                    status_counts[code] += 1
+                # Check if the line count is within the first 10 lines
+                if line_count <= 10:
+                    # Extract file size and status code from the reversed line
+                    total_file_size += int(reversed_line[0])  # file size
+                    code = reversed_line[1]  # status code
 
-            # Check if 10 lines have been processed
-            if line_count == 10:
-                # Print statistics and reset counter
-                print_statistics(status_counts, total_file_size)
+                    # Check if status code is valid
+                    if (code in status_counts.keys()):
+                        # Increment status code count
+                        status_counts[code] += 1
 
-                # Reset line count to 0
-                line_count = 0
+                # Check if 10 lines have been processed
+                if line_count == 10:
+                    # Print statistics and reset counter
+                    print_statistics(status_counts, total_file_size)
 
-finally:
-    # Print final statistics before exiting
-    print_statistics(status_counts, total_file_size)
+                    # Reset line count to 0
+                    line_count = 0
+
+    finally:
+        # Print final statistics before exiting
+        print_statistics(status_counts, total_file_size)
+
+
+main()
