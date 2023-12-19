@@ -71,16 +71,14 @@ try:
             # Increment line count for each line processed
             line_count += 1
 
-            # Check if the line count is within the first 10 lines
-            if line_count <= 10:
-                # Extract file size and status code from the reversed line
-                total_file_size += int(line[0])  # file size
-                code = line[1]  # status code
+            # Extract file size and status code from the reversed line
+            total_file_size += int(line[0])  # file size
+            code = line[1]  # status code
 
-                # Check if status code is valid
-                if code in status_counts:
-                    # Increment status code count
-                    status_counts[code] += 1
+            # Check if status code is valid
+            if code in status_counts:
+                # Increment status code count
+                status_counts[code] += 1
 
             # Check if 10 lines have been processed
             if line_count == 10:
