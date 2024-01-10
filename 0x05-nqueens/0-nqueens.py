@@ -60,7 +60,75 @@ def get_solution(board):
     return (solution)
 
 
-def Markout(board, row, col):
+def mark_forward_and_backward(board, row, col):
+    """
+    Mark out all forward and backward spots.
+    """
+    for c in range(col + 1, len(board)):
+        board[row][c] = "x"
+    for c in range(col - 1, -1, -1):
+        board[row][c] = "x"
+
+
+def mark_above_and_below(board, row, col):
+    """
+    Mark out all spots above and below.
+    """
+    for r in range(row + 1, len(board)):
+        board[r][col] = "x"
+    for r in range(row - 1, -1, -1):
+        board[r][col] = "x"
+
+
+def mark_diagonal_down_right(board, row, col):
+    """
+    Mark out all spots diagonally down to the right.
+    """
+    c = col + 1
+    for r in range(row + 1, len(board)):
+        if c >= len(board):
+            break
+        board[r][c] = "x"
+        c += 1
+
+
+def mark_diagonal_up_left(board, row, col):
+    """
+    Mark out all spots diagonally up to the left.
+    """
+    c = col - 1
+    for r in range(row - 1, -1, -1):
+        if c < 0:
+            break
+        board[r][c]
+        c -= 1
+
+
+def mark_diagonal_up_right(board, row, col):
+    """
+    Mark out all spots diagonally up to the right.
+    """
+    c = col + 1
+    for r in range(row - 1, -1, -1):
+        if c >= len(board):
+            break
+        board[r][c] = "x"
+        c += 1
+
+
+def mark_diagonal_down_left(board, row, col):
+    """
+    Mark out all spots diagonally down to the left.
+    """
+    c = col - 1
+    for r in range(row + 1, len(board)):
+        if c < 0:
+            break
+        board[r][c] = "x"
+        c -= 1
+
+
+def mark_out(board, row, col):
     """
     Mark out spots on a chessboard.
 
@@ -72,46 +140,23 @@ def Markout(board, row, col):
         row (int): The row where a queen was last played.
         col (int): The column where a queen was last played.
     """
-    # Mark out all forward spots
-    for c in range(col + 1, len(board)):
-        board[row][c] = "x"
-    # Mark out all backwards spots
-    for c in range(col - 1, -1, -1):
-        board[row][c] = "x"
-    # Mark out all spots below
-    for r in range(row + 1, len(board)):
-        board[r][col] = "x"
-    # Mark out all spots above
-    for r in range(row - 1, -1, -1):
-        board[r][col] = "x"
+    # Mark out all forward and backwards spots
+    mark_forward_and_backward(board, row, col)
+
+    # Mark out all spots above and below
+    mark_above_and_below(board, row, col)
+
     # Mark out all spots diagonally down to the right
-    c = col + 1
-    for r in range(row + 1, len(board)):
-        if c >= len(board):
-            break
-        board[r][c] = "x"
-        c += 1
+    mark_diagonal_down_right(board, row, col)
+
     # Mark out all spots diagonally up to the left
-    c = col - 1
-    for r in range(row - 1, -1, -1):
-        if c < 0:
-            break
-        board[r][c]
-        c -= 1
+    mark_diagonal_up_left(board, row, col)
+
     # Mark out all spots diagonally up to the right
-    c = col + 1
-    for r in range(row - 1, -1, -1):
-        if c >= len(board):
-            break
-        board[r][c] = "x"
-        c += 1
+    mark_diagonal_up_right(board, row, col)
+
     # Mark out all spots diagonally down to the left
-    c = col - 1
-    for r in range(row + 1, len(board)):
-        if c < 0:
-            break
-        board[r][c] = "x"
-        c -= 1
+    mark_diagonal_down_left(board, row, col)
 
 
 def recursive_solve(board, row, queens, solutions):
@@ -136,7 +181,7 @@ def recursive_solve(board, row, queens, solutions):
         if board[row][c] == " ":
             tmp_board = board_deepcopy(board)
             tmp_board[row][c] = "Q"
-            Markout(tmp_board, row, c)
+            mark_out(tmp_board, row, c)
             solutions = recursive_solve(
                 tmp_board, row + 1, queens + 1, solutions
             )
