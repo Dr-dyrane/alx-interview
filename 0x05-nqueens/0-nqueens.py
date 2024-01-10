@@ -25,65 +25,60 @@ Author: ChatGPT
 import sys
 
 
-def initialize_board(size):
+def initialize_chessboard(size):
     """Initialize an empty chessboard of size x size."""
-    return [[' ' for _ in range(size)] for _ in range(size)]
+    chessboard = [[' ' for _ in range(size)] for _ in range(size)]
+    return chessboard
 
 
-def deep_copy(board):
+def deep_copy_chessboard(chessboard):
     """Create a deep copy of the chessboard."""
-    return [row.copy() for row in board]
+    return [row.copy() for row in chessboard]
 
 
-def mark_attacked_positions(board, row, col):
+def find_queen_positions(chessboard):
+    """Find the positions of queens on the chessboard."""
+    positions = []
+    for row, row_values in enumerate(chessboard):
+        for col, val in enumerate(row_values):
+            if val == "Q":
+                positions.append([row, col])
+    return positions
+
+
+def mark_attacked_positions(chessboard, row, col):
     """Mark positions attacked by a queen."""
-    size = len(board)
-    for i in range(size):
-        board[row][i] = 'x'  # Mark row
-        board[i][col] = 'x'  # Mark column
+    directions = [
+        (0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
 
-        # Mark diagonals
-        if 0 <= row + i < size and 0 <= col + i < size:
-            board[row + i][col + i] = 'x'
-        if 0 <= row - i < size and 0 <= col + i < size:
-            board[row - i][col + i] = 'x'
-        if 0 <= row + i < size and 0 <= col - i < size:
-            board[row + i][col - i] = 'x'
-        if 0 <= row - i < size and 0 <= col - i < size:
-            board[row - i][col - i] = 'x'
+    for dr, dc in directions:
+        r, c = row, col
+        while 0 <= r < len(chessboard) and 0 <= c < len(chessboard[0]):
+            chessboard[r][c] = 'x'
+            r += dr
+            c += dc
 
 
-def find_solutions(board, row, solutions):
-    """Find all solutions to the N-Queens problem."""
-    size = len(board)
-
-    if row == size:
-        solutions.append([
-            [r, c]
-            for r in range(size)
-            for c in range(size) if board[r][c] == 'Q'
-        ])
+def solve_nqueens(chessboard, row, queens, solutions):
+    """Recursively solve the N-Queens puzzle."""
+    if queens == len(chessboard):
+        solutions.append(find_queen_positions(chessboard))
         return solutions
 
-    for col in range(size):
-        if board[row][col] == ' ':
-            new_board = deep_copy(board)
-            new_board[row][col] = 'Q'
-            mark_attacked_positions(new_board, row, col)
-            solutions = find_solutions(new_board, row + 1, solutions)
+    for col in range(len(chessboard[0])):
+        if chessboard[row][col] == " ":
+            new_chessboard = deep_copy_chessboard(chessboard)
+            new_chessboard[row][col] = "Q"
+            mark_attacked_positions(new_chessboard, row, col)
+            solutions = solve_nqueens(
+                new_chessboard, row + 1, queens + 1, solutions)
 
     return solutions
 
 
-def print_solutions(solutions):
-    """Print the solutions."""
-    for solution in solutions:
-        print(solution)
-
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: ./0-nqueens.py N")
+        print("Usage: nqueens N")
         sys.exit(1)
 
     try:
@@ -96,6 +91,7 @@ if __name__ == "__main__":
         print("N must be at least 4")
         sys.exit(1)
 
-    chessboard = initialize_board(n)
-    all_solutions = find_solutions(chessboard, 0, [])
-    print_solutions(all_solutions)
+    chessboard = initialize_chessboard(n)
+    all_solutions = solve_nqueens(chessboard, 0, 0, [])
+    for solution in all_solutions:
+        print(solution)
