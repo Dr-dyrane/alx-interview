@@ -8,9 +8,9 @@ const request = require('request');
  */
 function getStarWarsCharacters (movieId) {
   // API endpoint URL
-  const apiUrl = `https://swapi-api.hbtn.io/api/films/${movieId}/`;
+  const apiUrl = `https://swapi-api.alx-tools.com/api/films/${movieId}/`;
 
-  // Making a request to the Star Wars API
+  // Making a request to the Star Wars API to get movie data
   request(apiUrl, (error, response, body) => {
     if (error) {
       console.error('Error:', error);
@@ -23,30 +23,29 @@ function getStarWarsCharacters (movieId) {
     // Extracting the characters list from the film data
     const characters = filmData.characters;
 
-    // Displaying characters one per line
-    characters.forEach((characterUrl) => {
-      // Extracting character ID from the character URL
-      const characterId = characterUrl.split('/').filter(Boolean).pop();
-
-      // Fetching individual character data
+    // Array to store promises for individual character requests
+    const characterPromises = characters.map(characterUrl => new Promise((resolve, reject) => {
+      // Making a request to the Star Wars API to get individual character data
       request(characterUrl, (charError, charResponse, charBody) => {
         if (charError) {
-          console.error('Error fetching character:', charError);
-          return;
+          reject(charError);
         }
 
         // Parsing character data as JSON
         const characterData = JSON.parse(charBody);
 
-        // Displaying the character name
-        console.log(characterData.name);
-
-        // Check if it's the last character, then print a newline
-        if (characterId === characters[characters.length - 1].split('/').filter(Boolean).pop()) {
-          console.log();
-        }
+        // Resolving the promise with the character name
+        resolve(characterData.name);
       });
-    });
+    }));
+
+    // Wait for all character promises to resolve
+    Promise.all(characterPromises)
+      .then(names => {
+        // Displaying characters one per line
+        console.log(names.join('\n'));
+      })
+      .catch(allErr => console.log(allErr));
   });
 }
 
