@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Module for makeChange function
+Module for makeChange function using Greedy Algorithm
 """
 
 
@@ -22,8 +22,13 @@ def makeChange(coins, total):
     Notes:
     - You can assume you have an infinite number
         of each denomination of coin in the list.
-    - This implementation uses dynamic programming to
-        efficiently calculate the minimum number of coins.
+    - This implementation uses a Greedy Algorithm, selecting
+        the largest coins first to optimize for the current amount.
+
+    Greedy Algorithm Explanation:
+    - Sort the coins in descending order to consider larger coins first.
+    - Iterate through the sorted coins, using as many of the current coin
+        as possible until the target amount is reached or cannot be covered.
 
     Example:
     >>> makeChange([1, 2, 25], 37)
