@@ -10,7 +10,8 @@ def makeChange(coins, total):
     of coins needed to meet a given amount total.
 
     Args:
-    - coins (list): A list of positive integers representing the values of available coins.
+    - coins (list): A list of positive integers representing
+        the values of available coins.
     - total (int): The target amount for which change needs to be made.
 
     Returns:
@@ -19,8 +20,10 @@ def makeChange(coins, total):
            If the total cannot be met by any combination of coins, return -1.
 
     Notes:
-    - You can assume you have an infinite number of each denomination of coin in the list.
-    - This implementation uses dynamic programming to efficiently calculate the minimum number of coins.
+    - You can assume you have an infinite number
+        of each denomination of coin in the list.
+    - This implementation uses dynamic programming to
+        efficiently calculate the minimum number of coins.
 
     Example:
     >>> makeChange([1, 2, 25], 37)
@@ -44,8 +47,9 @@ def makeChange(coins, total):
     for coin in coins:
         # Update the minimum number of coins needed for each amount
         for amount in range(coin, total + 1):
-            min_coins[amount] = min(
-                min_coins[amount], min_coins[amount - coin] + 1)
+            if coin <= amount:
+                min_coins[amount] = min(
+                    min_coins[amount], min_coins[amount - coin] + 1)
 
     # If the minimum number of coins for the total is still float('inf'),
     # it means it's not possible
