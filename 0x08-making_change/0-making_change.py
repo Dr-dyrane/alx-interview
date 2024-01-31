@@ -32,32 +32,21 @@ def makeChange(coins, total):
     >>> makeChange([1256, 54, 48, 16, 102], 1453)
     -1
     """
-
     if total <= 0:
-            return 0
+        return 0
 
-    # Dictionary to memoize results of subproblems
-    memo = {}
+    # Sort coins in descending order
+    sorted_coins = sorted(coins, reverse=True)
 
+    # Initialize variables
+    coins_used = 0
 
-    def min_coins_helper(amount):
-        if amount == 0:
-            return 0
-        if amount < 0:
-            return float('inf')
-        if amount in memo:
-            return memo[amount]
+    # Iterate through each coin value
+    for coin in sorted_coins:
+        # Use as many of the current coin as possible
+        while total >= coin:
+            coins_used += 1
+            total -= coin
 
-        # Calculate the minimum number of coins needed for the current amount
-        min_coins_needed = float('inf')
-        for coin in coins:
-            min_coins_needed = min(
-                min_coins_needed, min_coins_helper(amount - coin) + 1)
-
-        memo[amount] = min_coins_needed
-        return min_coins_needed
-
-    result = min_coins_helper(total)
-
-    return result if result != float('inf') else -1
-
+    # Check if the total amount has been completely covered
+    return coins_used if total == 0 else -1
