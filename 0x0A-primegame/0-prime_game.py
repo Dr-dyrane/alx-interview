@@ -15,10 +15,10 @@ The player who cannot make a move loses the game.
 def is_prime(num):
     """
     Checks if a number is prime.
-    
+
     Parameters:
         num (int): The number to check.
-        
+
     Returns:
         bool: True if the number is prime, False otherwise.
     """
@@ -33,12 +33,12 @@ def is_prime(num):
 def isWinner(x, nums):
     """
     Determines the winner of each round of the prime game.
-    
+
     Parameters:
         x (int): The number of rounds.
         nums (list): An array of integers representing the set of consecutive
                      integers for each round.
-                     
+
     Returns:
         str or None: The name of the player who won the most rounds.
         If the winner
@@ -62,4 +62,3 @@ def isWinner(x, nums):
         return "Ben"
     else:
         return None
-
