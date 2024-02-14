@@ -44,6 +44,9 @@ def isWinner(x, nums):
         If the winner
                      cannot be determined, returns None.
     """
+    if x is None or nums is None or x == 0 or nums == []:
+        return None
+
     maria_wins = 0
     ben_wins = 0
 
