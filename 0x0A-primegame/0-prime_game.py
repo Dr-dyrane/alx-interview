@@ -48,9 +48,7 @@ def isWinner(x, nums):
         str or None: The name of the player who won the most rounds.
                      If the winner cannot be determined, returns None.
     """
-    if (
-        x is None
-        or nums is None or x == 0 or nums == []):
+    if x is None or nums is None or x == 0 or nums == []:
         return None
 
     maria_wins = 0
