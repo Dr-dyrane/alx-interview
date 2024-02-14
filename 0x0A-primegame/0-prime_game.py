@@ -29,7 +29,7 @@ def generate_prime_numbers(n):
     for num in range(2, n + 1):
         if sieve[num]:
             prime_numbers.append(num)  # Add prime to the list
-            for multiple in range(num * num, n + 1, num):
+            for multiple in range(num, n + 1, num):
                 sieve[multiple] = False
 
     return prime_numbers
