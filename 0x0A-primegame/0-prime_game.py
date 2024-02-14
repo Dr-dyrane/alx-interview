@@ -35,13 +35,13 @@ def generate_prime_numbers(n):
     return prime_numbers
 
 
-def isWinner(num_rounds, round_limits):
+def isWinner(x, nums):
     """
     Determines the winner of each round of the prime game.
 
     Args:
-        num_rounds (int): The number of rounds.
-        round_limits (list): An array of integers representing the upper limit
+        x (int): The number of rounds.
+        nums (list): An array of integers representing the upper limit
                              of range for each round.
 
     Returns:
@@ -49,15 +49,15 @@ def isWinner(num_rounds, round_limits):
                      If the winner cannot be determined, returns None.
     """
     if (
-        num_rounds is None
-        or round_limits is None or num_rounds == 0 or round_limits == []):
+        x is None
+        or nums is None or x == 0 or nums == []):
         return None
 
     maria_wins = 0
     ben_wins = 0
 
-    for limit in round_limits:
-        prime_numbers = generate_prime_numbers(limit)
+    for limit in range(x):
+        prime_numbers = generate_prime_numbers(nums[limit])
         if len(prime_numbers) % 2 == 0:
             ben_wins += 1
         else:
